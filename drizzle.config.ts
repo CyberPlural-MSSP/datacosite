@@ -9,4 +9,6 @@ export default {
     url: env.DATABASE_URL,
   },
   tablesFilter: ["datacosite_*"],
+  verbose: true,
+  strict: true,
 } satisfies Config;

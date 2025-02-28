@@ -7,7 +7,8 @@ import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { SearchIcon } from "lucide-react";
+import { LockIcon, SearchIcon, ChartLineIcon } from "lucide-react";
+import Image from "next/image";
 
 const formSchema = z.object({
   search: z.string().min(2, {
@@ -22,8 +23,9 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="mx-auto max-w-3xl text-center">
+          <Image className="mx-auto mb-8" src={"/logo.svg"} alt="cyberplural logo" width={180} height={260}/>
           <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-6xl">
-            Professional PII Search Portal
+            CyberPlural DataCosite
           </h1>
           <p className="mb-8 text-lg text-muted-foreground md:text-xl">
             Securely search and analyze personally identifiable information across our comprehensive MSSP database. Enterprise-grade security and compliance built-in.
@@ -31,7 +33,7 @@ export default function Home() {
           
           <Card className="mx-auto">
             <CardHeader>
-              <CardTitle>Search Database</CardTitle>
+              <CardTitle>Search our Database</CardTitle>
             </CardHeader>
             <CardContent>
               <Search />
@@ -53,7 +55,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center">
               <div className="mb-4 rounded-full bg-primary/10 p-3">
-                <SearchIcon className="h-6 w-6 text-primary" />
+                <ChartLineIcon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2 font-semibold">Real-time Results</h3>
               <p className="text-sm text-muted-foreground">
@@ -62,7 +64,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-center">
               <div className="mb-4 rounded-full bg-primary/10 p-3">
-                <SearchIcon className="h-6 w-6 text-primary" />
+                <LockIcon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="mb-2 font-semibold">Secure Access</h3>
               <p className="text-sm text-muted-foreground">

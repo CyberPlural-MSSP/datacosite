@@ -6,11 +6,14 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { env } from "~/env";
+import jwt from "jsonwebtoken";
 
 import { db } from "~/server/db";
+import { type ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 /**
  * 1. CONTEXT
@@ -104,3 +107,23 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+export const privateProcedure = t.procedure.use(async ({ next, ctx }) => {
+  const token = ctx.headers.get("authorization")?.split(" ")[1];
+
+  if (!token) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid token" });
+  }
+
+  const decoded = jwt.verify(token, env.JWT_SECRET) as { adminId: number };
+
+  const admin = await ctx.db.query.admins.findFirst({
+    where: (admins, { eq }) => eq(admins.id, decoded.adminId),
+  });
+
+  if (!admin) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid token" });
+  }
+  
+  return next({ ctx: { admin } });
+}); 
