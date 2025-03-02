@@ -6,6 +6,7 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
+  SettingsIcon,
   Sparkles,
 } from "lucide-react"
 
@@ -30,10 +31,12 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar"
 import { api } from "~/trpc/react"
+import { useRouter } from "next/navigation";
 
 export default function UserActions() {
   const { isMobile } = useSidebar()
   const { data: user } = api.admin.me.useQuery();
+  const router = useRouter();
 
   const avatarName = user?.name?.split(" ").map(name => name[0]?.toUpperCase()).join("");
 
@@ -75,9 +78,9 @@ export default function UserActions() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>
+                <SettingsIcon />
+                Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

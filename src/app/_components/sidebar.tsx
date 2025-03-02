@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +16,8 @@ import UserActions from "./user-actions";
 import Image from "next/image";
 import Link from "next/link";
 import { BarChartIcon, SearchIcon, PlusIcon, HomeIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+
 const DataItems = [
   {
     label: "Overviews",
@@ -32,6 +36,8 @@ const DataItems = [
   },
 ]
 export default function AppSidebar() {
+  const path = usePathname();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -41,7 +47,7 @@ export default function AppSidebar() {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={path === "/dashboard"}>
                 <Link href="/dashboard">
                   <HomeIcon className="w-4 h-4" />
                   <span>Home</span>
@@ -58,7 +64,7 @@ export default function AppSidebar() {
             <SidebarMenu>
             {DataItems.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={path === item.href}>
                   <Link href={item.href}>
                     <item.icon className="w-4 h-4" />
                     <span>{item.label}</span>

@@ -126,4 +126,28 @@ export const privateProcedure = t.procedure.use(async ({ next, ctx }) => {
   }
   
   return next({ ctx: { admin } });
-}); 
+});
+
+export const rootAdminProcedure = t.procedure.use(async ({ next, ctx }) => {
+  const token = ctx.headers.get("authorization")?.split(" ")[1];
+
+  if (!token) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid token" });
+  }
+
+  const decoded = jwt.verify(token, env.JWT_SECRET) as { adminId: number };
+
+  const admin = await ctx.db.query.admins.findFirst({
+    where: (admins, { eq }) => eq(admins.id, decoded.adminId),
+  });
+
+  if (!admin) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid token" });
+  }
+
+  if (admin.id !== 1) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid token" });
+  }
+  
+  return next({ ctx: { admin } });
+});

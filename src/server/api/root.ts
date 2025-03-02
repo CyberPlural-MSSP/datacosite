@@ -1,4 +1,5 @@
 import { adminRouter } from "~/server/api/routers/admin";
+import { dataTypesRouter } from "~/server/api/routers/data-types";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
+  dataTypes: dataTypesRouter,
 });
 
 // export type definition of API
